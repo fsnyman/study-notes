@@ -1,4 +1,5 @@
 # Dart Basics
+
 ## Dart Features
 | Feature | Description |
 |-|-|
@@ -538,9 +539,141 @@ void main() {
 ```
 
 
+# Control Flow
+## if / else if / else
 
+```Dart
+void main() {
+  const age = 25;
+  if (age < 18) {
+    print('You are a minor.');
+  } else if (age < 21) {
+    print('You are a young adult.');
+  } else {
+    print('You are an adult.');
+  }
+}
+```
 
+## while loops
+while (boolean) {}
 
+```Dart
+var i = 0;
+  while (i < 5) {
+    print('i = $i');
+    i++;
 
+i = 0;
+  do {
+    print('i = $i');
+    i++;
+  } while (i < 5);
+  }```
+
+## for loops
+for (initialise variable; exit condition, increment/decrement statement) {}
+
+```Dart
+for (var i = 0; i < 5; i++) {
+    print('i = $i');
+  }```
+  *you can also loop through collections with a for loop, but more on that under the collections section*
+
+## break and continue
+**break**: breaks out of the current loop without executing the rest of the code in the loop.
+**continue**: does not break out of the loop, but continues to the next iteration of the loop skipping the remaining code in the loop.
+
+```Dart
+//--------------------- break example ---------------------
+import 'dart:math';
+import 'dart:io';
+
+void main() {
+  //generate a random number between 1 and 10
+  String randomNumber = (Random().nextInt(9) + 1).toString();
+  //loop indefinitely
+  while (true) {
+    print('Guess a number from 1 to 10:');
+    String input = (stdin.readLineSync()).toString();
+  //if the guess is correct, use break to escape the loop  
+    if (input == randomNumber) {
+      print('You win! It is $randomNumber!!');
+      break;
+  //if the guess was wrong, taunt the user
+    } else {
+      print('You lose! You will never escape! Try again.');
+    }
+  }
+}
+```
+
+```Dart
+//--------------------- continue example ---------------------
+import 'dart:math';
+
+void main() {
+  int blackSheep = (Random().nextInt(14) + 1);
+  print('The black sheep is number $blackSheep');
+  for (int kidsInClass = 1; kidsInClass <= 15; kidsInClass++) {
+    if (kidsInClass == blackSheep) {
+      continue;
+      //now the black sheep in the class does not get a sweety
+    }
+    print('Here\'s a sweety for you kid number $kidsInClass');
+  }
+}
+```
+
+## The switch statement
+
+Useful for known cases, even if it ends up as more code than if/else statements
+*Remember to break out of each case*
+
+```Dart
+ switch (age) {
+    case 18:
+      print('You are 18.');
+      break;
+    case 21:
+      print('You are 21.');
+      break;
+    default:
+      print('You are neither 18 nor 21.');
+      break;
+  }```
+
+## Enumerations
+
+With enumerations you define a type with multiple values. It is advised to use enums if you have a set of predefined values. This will result in clearer code. Think days of the week or cards in a deck. 
+
+```Dart
+enum Medal { gold, silver, bronse, noMedal } //note no '' or ;
+// if you add a , after the last value dart will 
+void main() {
+  const medalWon = Medal.gold;
+  print(Medal.values); 
+      // Output: [Medal.gold, Medal.silver, Medal.bronse, Medal.noMedal]
+  print(medalWon); // Output: Medal.gold
+  print(medalWon.name); // Output: gold
+
+  switch (medalWon) {
+    case Medal.gold:
+      print('You won gold!');
+      break;
+    case Medal.silver:
+      print('You won silver!');
+      break;
+    case Medal.bronse:
+      print('You won bronse!');
+      break;
+    case Medal.noMedal:
+      print('You won no medal!');
+      break;
+  }
+}
+```
+
+# Collections
 
 
