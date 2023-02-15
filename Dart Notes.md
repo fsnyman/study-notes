@@ -451,7 +451,92 @@ print(x);
 - Do not hold a value (and cannot be assigned to a variable)
 - The entire line "int x = (10 + 3) % 4;" and "print(x);" are e
 
-# Dart Type System
+
+# Dart Type System 
+
+### Static vs Dynamically Typed Languages
+
+**Static**: Each variable and expression is explicitly declared with a specific data type and checked at compile time. Better for catching type related errors improve program reliability.
+
+**Dynamic**: Variable or expression types are not required to be declared explicitly. The type of a variable or expression is determined at runtime, resulting in more concise and flexible code.
+
+
+| Static Typing	| Dynamic Typing |
+|--|--|
+| C	| Python|
+| Java	 | Ruby |
+| Swift |	JavaScript |
+| Dart	| |
+
+
+### Type Inference
+
+Variable types do not need to be declared explicitly in dart, but once a variable is inferred or declared it cannot be changed to another type of variable (like int to String).
+
+### var, final, const, dynamic keywords
+Always use const over final over var. 
+
+#### var 
+Used to infer the variable type automatically.
+```Dart
+void main() {
+  var name = 'Francois';
+  var age = 42;
+
+  print(name.runtimeType); // Output: String
+  print(age.runtimeType); // Output: int
+}
+```
+
+
+#### final
+Used to declare or infer a variable with a value that cannot be changed. Using final instead of var where possible is best practice and could increase program stability.
+```Dart
+void main() {
+  String name = 'Francois';
+  final nameUpper = name.toUpperCase();
+  /*Note that this still works even though name.toUpperCase()
+  will only be known at runtime*/
+  final int age = 42;
+
+  print(name.runtimeType); // Output: String
+  print(name.runtimeType); // Output: String
+  print(age.runtimeType); // Output: int
+}
+```
+
+
+
+#### const
+- Used to declare a compile-time constants. 
+- Even more restrictive than final. 
+	- It is only possible to declare a const with a value that is known at compile time and not a value that will only be known at runtime. 
+	- In this example name.toUpperCase() will only be known at runtime and not at compile-time, so you will not be allowed to declare it as the value of a const
+```Dart
+void main() {
+  var name = 'Francois';
+  const upperName = name.toUpperCase();
+```
+- Very good for performance as it allows the compiler to better optimise the generated code. 
+
+
+
+#### dynamic
+- Used to opt-out of type safety
+- Useful in cases where variables need to change type like when working with JSON data. 
+- Should be used as a last resort. Type safety is there to make code safer and should be used. 
+```Dart
+void main() {
+  dynamic name = 'Francois';
+  
+  name = 42;
+  print(name.runtimeType); // Output: int
+  
+  name = true;
+  print(name.runtimeType); // Output: bool
+}
+```
+
 
 
 
