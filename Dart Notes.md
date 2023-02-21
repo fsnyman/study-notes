@@ -676,4 +676,109 @@ void main() {
 
 # Collections
 
+| | Ordered	| Unique|	Key-Value |	Variable Number of Arguments | Use | Iterable |
+|--|--|--|--|--|--|--|
+| List |	No	| No	| No	| Yes | 'list' constructor or [] | Yes |
+| Set |	Yes |	Yes|	No |	Yes | 'set' constructor or {} | |
+| Map |	No |	Yes |	Yes |	No | 'map' constructor or {:} | |
+
+
+## Lists 
+**List**: A list is an unordered collection of objects in which duplicates are allowed. It is represented by the List class in Dart, and can contain objects of any type. Lists can be created using the square bracket notation, or by calling the List constructor.
+
+ ```Dart
+void main() {
+  List numbers = [1, 3, 5, 7, 9];
+  var answer = 0;
+  for (var value in numbers) {
+    answer = value + answer;
+  } //for loop
+  print(answer); // 25
+} // main 
+```
+
+### List Methods
+#### Note!:
+- Some methods are not compatible with empty lists. When they are used on an empty list they will result in an error at runtime.
+	- These include: .first .last
+
+```Dart
+void main() {
+  List cities = ['London', 'Paris', 'New York', 'Cape Town'];
+  print(
+      'Cities list: $cities'); 
+      //Cities list: [London, Paris, New York, Cape Town]
+  print(
+      'There are ${cities.length} Cities in the list'); 
+      //There are 4 Cities in the list
+  print(
+      '\'.isNotEmpty\' output on the cities list is: ${cities.isNotEmpty}'); 
+      //'.isNotEmpty' output on the cities list is: true
+  print(
+      '\'.isEmpty\' output on an empty list is: ${[].isEmpty}'); 
+      //'.isEmpty' output on an empty list is: true
+  print(
+      'The first city in thelist is ${cities.first}'); 
+      //The first city in thelist is London
+  print(
+      'The last city in the list is ${cities.last}'); 
+      //The last city in the list is Cape Town
+  print(
+      'The second city in the list is ${cities[1]}'); 
+      //The second city in the list is Paris
+  
+  // remove New York and add Lisbon in its place
+  cities.removeAt(2);
+  print(cities); //[London, Paris, Cape Town]
+  cities.insert(2, 'Lisbon');
+  print(cities); //[London, Paris, Lisbon, Cape Town]
+  cities.clear();
+  print('Cities list empty: ${cities.isEmpty}'); 
+  //Cities list empty: true
+  cities = ['London', 'Paris', 'New York', 'Cape Town'];
+  print(
+      'Is Lisbon in the list?: ${cities.contains('Lisbon')}'); 
+      //Is Lisbon in the list?: false
+  print(
+      'Paris is in position ${cities.indexOf('Paris') + 1} in the city list'); 
+      //Paris is in position 2 in the city list
+  print(
+      'Something that is not in the list show up as ${cities.indexOf('bleh')}'); 
+      //Something that is not in the list show up as -1
+}
+```
+
+### Type Annotations with Lists
+Used to restrict the type of variable that can be used in the list to make code safer. 
+
+``` Dart
+void main() {
+  List<String> cities = ['London', 'Paris', 'Cape Town'];
+  print('Cities list: $cities'); //Cities list: [London, Paris, Cape Town, 5]
+  List<int> numbers = [1, 3, 5, 7];
+  print('Numbers list: $numbers'); //Numbers list: [1, 3, 5, 7, 9]
+  //!!!!! But it is better to user var, const or final to declare a list
+  //To declare a list using var, but still casting it as a list of strings:
+  var names = <String>['Bob', 'Jack', 'Zoe'];
+  print(names); //[Bob, Jack, Zoe]
+}
+```
+
+### Using var, final and const in Lists
+
+|  | **Reassign to new list** | **Changes values in list** |
+|--|--|--|
+| **var** | Yes | Yes |
+| **final** | No, compile time error | Yes |
+| **const** | No, compile time error | No, **RUNTIME ERROR** | 
+
+## Sets
+**Set**: A set is an ordered collection of unique objects. It is represented by the Set class in Dart, and can also contain objects of any type. Sets can be created using the curly brace notation, or by calling the Set constructor.
+
+## Maps
+**Map**: A map is an unordered collection of key-value pairs, in which each key is unique. It is represented by the Map class in Dart, and can also contain objects of any type. Maps can be created using the curly brace notation, with a colon separating the keys and values, or by calling the Map constructor.
+
+## Spread
+**Spread**: Spread is an operator in Dart that allows you to insert the contents of an iterable (such as a list, set, or map) into another iterable or function call. It is represented by the spread operator (...) followed by the iterable. The spread operator can be used to combine multiple lists or sets, or to add key-value pairs to a map.
+
 
