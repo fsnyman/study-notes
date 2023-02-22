@@ -678,13 +678,13 @@ void main() {
 
 | | Ordered	| Unique|	Key-Value |	Variable Number of Arguments | Use | Iterable |
 |--|--|--|--|--|--|--|
-| List |	No	| No	| No	| Yes | 'list' constructor or [] | Yes |
-| Set |	Yes |	Yes|	No |	Yes | 'set' constructor or {} | |
+| List |	Yes	| No	| No	| Yes | 'list' constructor or [] | Yes |
+| Set |	No TBC |	Yes|	No |	Yes | 'set' constructor or {} | |
 | Map |	No |	Yes |	Yes |	No | 'map' constructor or {:} | |
 
 
 ## Lists 
-**List**: A list is an unordered collection of objects in which duplicates are allowed. It is represented by the List class in Dart, and can contain objects of any type. Lists can be created using the square bracket notation, or by calling the List constructor.
+**List**: A list is an ordered collection of objects in which duplicates are allowed. It is represented by the List class in Dart, and can contain objects of any type. Lists can be created using the square bracket notation, or by calling the List constructor.
 
  ```Dart
 void main() {
@@ -766,14 +766,68 @@ void main() {
 
 ### Using var, final and const in Lists
 
-|  | **Reassign to new list** | **Changes values in list** |
+|  | **Reassign variable to new list** | **Changes values in list** |
 |--|--|--|
 | **var** | Yes | Yes |
 | **final** | No, compile time error | Yes |
 | **const** | No, compile time error | No, **RUNTIME ERROR** | 
 
 ## Sets
-**Set**: A set is an ordered collection of unique objects. It is represented by the Set class in Dart, and can also contain objects of any type. Sets can be created using the curly brace notation, or by calling the Set constructor.
+**Set**: A set is an unordered collection of **unique** objects. It is represented by the Set class in Dart, and can also contain objects of any type. Sets can be created using the curly brace notation, or by calling the Set constructor.
+
+### Note!
+- The subscript operator (for example set[1] to return the 2nd entry) does not work with Sets. Instead use set.elementAt(1). 
+- Use the other methods that work with lists like set.add('thing'), set.remove('thing')... 
+
+### Sets are unordered, sort of
+[Docs on Sets on dart.dev](https://api.dart.dev/stable/2.19.2/dart-core/Set-class.html)
+Iterating over elements of a set may be either unordered or ordered in some way. Examples:
+
+- A [HashSet](https://api.dart.dev/stable/2.19.2/dart-collection/HashSet-class.html) is unordered, which means that its iteration order is unspecified,
+- [LinkedHashSet](https://api.dart.dev/stable/2.19.2/dart-collection/LinkedHashSet-class.html) iterates in the insertion order of its elements, and
+- a sorted set like [SplayTreeSet](https://api.dart.dev/stable/2.19.2/dart-collection/SplayTreeSet-class.html) iterates the elements in sorted order.
+- Constant set literals promise source ordering (first occurrence if the same value occurs more than once). They're like immutable LinkedHashSets.
+```Dart
+void main() {
+  final countries = <String>{'London', 'London', 'London', 'London'};
+  print(countries); //{London};
+  countries.add('Cape Town');
+  countries.addAll({'Amsterdam', 'Paris', 'Paris', 'Paris'});
+  print(countries); //{London, Cape Town, Amsterdam, Paris}
+  print('First Country: ${countries.first}'); //First Country: London
+  print('Is Cape Town in the set: ${countries.contains('Cape Town')}');
+  //Is Cape Town in the set: true
+  print('Last Country: ${countries.last}'); //Last Country: Paris
+  print('Set lenght: ${countries.length}'); //Set lenght: 4
+  int i = 0;
+  for (String country in countries) {
+    if (country == 'Cape Town') {
+      print(
+          'Cape Town is at position ${i + 1} in the set. Not ordered my ass!');
+      // Cape Town is at position 2 in the set. Not ordered my ass!
+      break;
+    } //if
+    i++;
+  } //for loop
+} //main
+```
+
+### Methods  unique to Sets (Union, Intersection, Difference, Subset, Superset)
+
+```Dart
+void main() {
+  var africanCountries = {'South Africa', 'Kenya', 'Zimbabwe'};
+  var europeanCountries = {'France', 'Germany', 'Italy', 'South Africa'};
+  print(africanCountries.union(europeanCountries));
+  // {South Africa, Kenya, Zimbabwe, France, Germany, Italy}
+  // Note South Africa is only printed once
+  print(africanCountries.intersection(europeanCountries)); // {South Africa}
+  print(africanCountries.difference(europeanCountries)); // {Kenya, Zimbabwe}
+  // Note that only 'different' countries in the first set are printed
+  // subset  
+}
+```
+
 
 ## Maps
 **Map**: A map is an unordered collection of key-value pairs, in which each key is unique. It is represented by the Map class in Dart, and can also contain objects of any type. Maps can be created using the curly brace notation, with a colon separating the keys and values, or by calling the Map constructor.
