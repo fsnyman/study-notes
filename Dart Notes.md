@@ -676,11 +676,11 @@ void main() {
 
 # Collections
 
-| | Ordered	| Unique|	Key-Value |	Variable Number of Arguments | Use | Iterable |
-|--|--|--|--|--|--|--|
-| List |	Yes	| No	| No	| Yes | 'list' constructor or [] | Yes |
-| Set |	No TBC |	Yes|	No |	Yes | 'set' constructor or {} | |
-| Map |	No |	Yes |	Yes |	No | 'map' constructor or {:} | |
+| | Ordered	| Unique|	Key-Value |	 Use | Iterable |
+|--|--|--|--|--|--|
+| List |	Yes	| No	| No	| 'list' constructor or [] | Yes |
+| Set |	No TBC |	Yes|	No |  'set' constructor or {} | Yes |
+| Map |	No |	Yes for keys |	Yes | 'map' constructor or {:} | 
 
 
 ## Lists 
@@ -832,7 +832,302 @@ void main() {
 ## Maps
 **Map**: A map is an unordered collection of key-value pairs, in which each key is unique. It is represented by the Map class in Dart, and can also contain objects of any type. Maps can be created using the curly brace notation, with a colon separating the keys and values, or by calling the Map constructor.
 
-## Spread
+```Dart
+void main() {
+  Map England = {
+    'Capital': 'London',
+    'Population': 60000000,
+    'Currency': 'Pound Sterling',
+    'Language': 'English'
+  }; // Map England
+  Map<String, dynamic> SouthAfrica = {
+    'Capital': 'Pretoria',
+    'Population': 60000000,
+    'Currency': 'Rand',
+    'Language': 'English'
+  }; // Map SouthAfrica
+  Map<int, int> numbers = {1: 1, 2: 4, 3: 9, 4: 16, 5: 25};
+  const bob = <String, dynamic>{
+    // can be declared with var final or const
+    'name': 'Bob',
+    'age': 25,
+    'height': 1.75,
+    'weight': 75,
+    'isMarried': false
+  };
+
+  print(England['Capital']); //London
+  print(SouthAfrica['Language']); //null
+  print(numbers[5]); //25
+  print("${bob['name']}'s age is ${bob['age']}"); //25
+} //main
+```
+
+### Manipulating data in Maps
+#### Change data
+```Dart
+void main() {
+  Map England = {
+    'Capital': 'London',
+    'Population': 60000000,
+    'Currency': 'Pound Sterling',
+    'Language': 'English'
+  }; // Map England
+
+// -- Change data --
+  print(England['Population']); //60000000
+  England['Population'] = 65000000;
+  print(England['Population']); //65000000
+
+// -- Add key value pair --
+  print(England); //60000000
+  //{Capital: London, Population: 65000000, Currency: Pound Sterling, Language: English}
+  England['New'] = 'Yeh Baby!';
+  print(England);
+  //{Capital: London, Population: 65000000, Currency: Pound Sterling, Language: English, New: Yeh Baby!}
+}
+```
+
+#### Reassigning dynamic map variables (the as operator)
+Dart will not automatically assign an obviously String value as a String when assigning it from a dynamic map to a normal variable. to fix this, use the as operator to specify the variable type. 
+
+```Dart
+void main() {
+  Map England = {
+    'Capital': 'London',
+    'Population': 60000000,
+    'Currency': 'Pound Sterling',
+    'Language': 'English'
+  }; // Map England
+  // -- the as operator --
+  var englandPopulation = England['Population'] as int;
+  print(England['Population'].runtimeType);
+  print(englandPopulation + 1); //London
+} //main
+```
+
+#### Null value if key does not exist
+When calling a map value with a key that does not exit, a null is returned.
+
+```Dart
+void main() {
+  var map = {'key1': 'value1', 'key2': 'value2'};
+  print(map['key3']); //null
+// check if key exists
+  if (map.containsKey('key3')) {
+    print(map['key3']);
+  } else {
+    print('Key does not exist');
+  } //if else
+} //main
+```
+
+#### Iterating on Maps
+An iterable is a collection of items that can be accessed in sequence. Maps are not iterable, but it is possible to iterate through the keys of a map with the .keys operator. 
+
+```Dart
+void main() {
+  var map = {'key1': 'value1', 'key2': 'value2', 'key3': 'value3'};
+  for (var key in map.keys) {
+    print(key);
+  } //for loop
+}
+```
+
+It is also possible to use the .entries operator.
+
+```Dart
+void main() {
+  var mymap = {'key1': 'value1', 'key2': 'value2', 'key3': 'value3'};
+  for (var myEntry in mymap.entries) {
+    print('${myEntry.key} : ${myEntry.value}');
+  } //for loop
+} //main
+```
+
+## Nested Collections
+##### Restaurant rating exercise 
+Task calculate the average of a list that is nested in a map that is nested in a list.
+(Calculate the average rating of multiple restaurants)
+```Dart
+final restaurants = [
+  {
+    'name': 'Pizza Place',
+    'cuisine': 'Italian',
+    'avgRating': 0.0,
+    'ratings': <double>[1.5, 3.5, 1.0, 2.0, 2.5],
+  },
+  {
+    'name': 'Thai Express',
+    'cuisine': 'Thai',
+    'avgRating': 0.0,
+    'ratings': <double>[4.0, 4.5, 4.5, 3.5, 3.5],
+  },
+  {
+    'name': 'Coffee Club',
+    'cuisine': 'Coffee',
+    'avgRating': 0.0,
+    'ratings': <double>[4.5, 4.0],
+  },
+  {
+    'name': 'Burger Town',
+    'cuisine': 'American',
+    'avgRating': 0.0,
+    'ratings': <double>[4.0, 3.5, 4.0],
+  },
+];
+void main() {
+  for (var restuarant in restaurants) {                    //given by instructor
+    final ratings = restuarant['ratings'] as List<double>; //given by instructor
+    //TODO: calculate the average rating and assign it to the 'avgRating' key
+    restuarant['avgRating'] = ratings.average; //answer
+  }
+}
+```
+
+##  Functions and Operators relevant to Collections
+
+It is possible to use collection-if, collection-for and ... together. These operators also work with literals instead of collections, in other words, it is possible to say ...[1,2,3] instead of ...countOneToThreeList.
+
+This functionality is very important when we start using flutter where the UI is defined declaratively. 
+
+### Collection-if
+
+It is possible to provide conditional logic to determine the values that should be assigned when declaring a list using the collection-if. 
+
+##### Note! 
+Even though this is an "if", it is not a regular if statement. Regular if statements cannot be used when declaring collections. 
+```Dart
+void main() {
+  bool likeBiltong = true;
+  bool likeMilkTart = false;
+
+  var saFoodForYou = [
+    'Bobotie',
+    'Bunny Chow',
+    'Braai',
+    if (likeBiltong) 'Biltong',
+    if (likeMilkTart) 'Milk Tart',
+  ];
+  print(saFoodForYou); // [Bobotie, Bunny Chow, Braai, Biltong]
+}
+```
+
+### Collection-for
+
+It is also possible to iterate though another collection when declaring a collection with the collection-for.
+```Dart
+void main() {
+  bool likeBiltong = true;
+  bool likeMilkTart = false;
+  var moreSAFood = [
+    'Bobotie',
+    'Bunny Chow',
+    'Braai',
+  ];
+  var saFoodForYou = [
+    for (var food in moreSAFood) food + '!',
+    if (likeBiltong) 'Biltong',
+    if (likeMilkTart) 'Milk Tart',
+  ];
+// notes that this can also be don with:
+// saFoodForYou.addAll(moreSAFood);
+  print(saFoodForYou); // [Bobotie, Bunny Chow, Braai, Biltong]
+}
+```
+### Spreads
 **Spread**: Spread is an operator in Dart that allows you to insert the contents of an iterable (such as a list, set, or map) into another iterable or function call. It is represented by the spread operator (...) followed by the iterable. The spread operator can be used to combine multiple lists or sets, or to add key-value pairs to a map.
 
+##### Note! 
+- Just adding the name of the other collection into a collection will nest the values, not spread them, see the example code.
+- The is also possible to spread a values into an iterable without declaring a list/map... beforehand. ...['one', 'two'] instead of ...countToTwo
 
+```Dart
+void main() {
+  bool likeBiltong = true;
+  bool likeMilkTart = false;
+  var moreSAFood = [
+    'Bobotie',
+    'Bunny Chow',
+    'Braai',
+  ];
+  var saFoodForYou = [
+    moreSAFood, //this will nest the list
+    ...moreSAFood, //this will spread the list
+    if (likeBiltong) 'Biltong',
+    if (likeMilkTart) 'Milk Tart',
+  ];
+// notes that this can also be don with:
+// saFoodForYou.addAll(moreSAFood);
+  print(saFoodForYou); //[[Bobotie, Bunny Chow, Braai], Bobotie, Bunny Chow, Braai, Biltong]
+}
+```
+
+## Composable use of if, for and Spread
+
+As noted earlier, you can combine if, for and ...
+```Dart
+void main() {
+  var wantMore = true;
+  var babyNames = ['Jack', 'Jill', 'Bob', 'Alice'];
+  var moreBabyNames = ['John', 'Jane', 'Jack', 'Joe'];
+
+  var finalBabyNamesList = [
+    ...babyNames,
+    if (wantMore)
+      for (var name in moreBabyNames)
+        if (name.length < 4) name + ' Snyman'
+  ];
+  print(finalBabyNamesList);
+} 
+```
+
+### Shopping list exercise 
+
+```Dart
+void main() {
+  const bananas = 5;
+  const apples = 6;
+  const grains = {
+    'pasta': '500g',
+    'rice': '1kg',
+  };
+  const addGrains = true;
+  var shoppingList = {
+    if (bananas > 0) 'bananas': '$bananas',
+    if (apples > 0) 'apples': '$apples',
+    if (addGrains) ...grains,
+  };
+  print(shoppingList); // {bananas: 5, apples: 6, pasta: 500g, rice: 1kg}
+}//mainain
+```
+
+## Copying Collections
+When assigning one collection the value of the other, both collections point to the same bit of memory, so if you change a value in one of these lists, the change will be applied to both.
+
+To copy the values into unique memory space use: 
+```Dart
+copyOfList = [...originalList]
+```
+
+```Dart
+void main() {
+  var originalList = [1, 2, 3];
+  var copiedList = originalList;
+  print(
+      'Simple assignment, before change. Original: $originalList, Copied: $copiedList');
+  print('Adding 4 to original list, not the copied list...');
+  originalList.add(4);
+  print(
+      'Simple assignment, after change. Original: $originalList, Copied: $copiedList \n');
+  var copiedList2 = [...originalList];
+  print(
+      'Spread operator, before change. Original: $originalList, Copied: $copiedList2');
+  print('Adding 5 to original list, not the copied list...');
+  originalList.add(5);
+  print(
+      'Spread operator, after change. Original: $originalList, Copied: $copiedList2');
+}
+```
+
+# Null Safety
