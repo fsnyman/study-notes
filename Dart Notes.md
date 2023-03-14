@@ -1220,3 +1220,136 @@ void main(List<String> arguments) {
 
 
 # Null Safety
+## Golden rules and notes:
+- Always initialise non-nullable variables with values. 
+- All values are non-nullable unless they are declared as nullable.
+- Everything that can be stored in a variable in dart is an object, **except null**
+- Dart’s null safety is sound. If the type system determines that something isn’t null, then that thing can never be null.
+
+## Flow analysis: Promotion and Definite Assignment 
+
+Nullable variables can be promoted to non-nullable variables where the flow of the code makes it impossible for the nullable variable to be null.  
+
+```Dart
+void main() {
+  int? a;
+  int b = 2;
+  if (a == null) { 
+//due to this null test we are allowed to add a and b even though a is nullable and b isn't
+    print('a is null');
+  } else {
+    print(a + b);
+  }
+}
+```
+
+In the same way flow analysis picks up when a non-nullable variable are definitely assigned and the compile-time error for not assigning a non-nullable variable is removed.
+
+```Dart
+void main() {
+  int a;
+  int b = 2;
+
+  if (b == 2) {
+    a = 1;
+  } else {
+    a = 2;
+  }
+  print(a);
+```
+
+## The null-aware access operator "?" 
+Use the null aware access operator to declare an object as nullable. This works for individual variables, entire collections or elements in a collections.
+
+```Dart
+void main() {
+  final cities = <String?>['London', 'Paris', null, 'New York'];
+  for (var city in cities) {
+    print(city?.toUpperCase()); 
+// This will print null if the city is null, instead of throwing an error
+  }
+}
+```
+
+### Ways to declare an object as nullable
+
+```Dart
+int? x = 1; //The ? after int says that x is nullable
+
+//declaring entire collections as nullable
+List<String>? nullableList;
+Set<int>? nullableSet;
+Map<String, int>? nullableMap;
+
+//declaring elements in collections as nullable
+List<String?> nullableList = ['hello', null, 'world'];
+Set<int?> nullableSet = {1, 2, null};
+Map<String, int?> nullableMap = {'a': 1, 'b': null, 'c': 3};
+```
+
+
+? allows you to safely access a property or method of an object that may be null, without throwing a NoSuchMethodError.
+
+## The null-aware cascade operator "??" (if-null operator)
+?? allows you to provide a default value to use when an expression is null, instead of throwing a NullPointerException.
+
+```Dart
+bool isReallyEmpty(String? inputstring) => inputstring?.isEmpty ?? true;
+
+void main() {
+  print(isReallyEmpty('')); // true
+  print(isReallyEmpty(null)); // true
+  print(isReallyEmpty('Word')); // false
+}
+```
+
+## The augmented assignment if-null operator
+The augmented assignment if-null operator assigns a value to a variable if that variable is null.
+
+```Dart
+void main() {
+  String? name;
+  name ??= 'No name on record';
+  print(name); // No name on record
+}
+```
+
+## The assertion operator '!'
+Use the assertion operator as an absolute last resort. 
+If you have a nullable variable and you're absolutely sure that it can't be null, you can use the non-null assertion operator ! to tell Dart to treat the variable as non-nullable. 
+This is useful to assign non-nullable variables to nullable variables in edge cases, but this basically disables null safety checks, which poses a significant threat to the stability of the program.  
+
+**The assertion operator is called the BANG operator for good reason!**
+
+```Dart
+int nonNullableInt = nullableInt!;
+```
+
+## Late keyword: The late keyword 
+
+The late keyword can be used to declare a variable that will be initialised later. This is useful when you want to declare a non-nullable variable, but you don't have a value to assign to it yet.
+
+late-initialised variables must be assigned a value before they are accessed. If you try to access a late-initialised variable before it has been assigned a value, Dart will throw a LateInitializationError.
+
+```Dart
+class MyClass {
+  late final int myNumber;
+
+  MyClass() {
+    myNumber = 42;
+  }
+
+  void printMyNumber() {
+    print(myNumber);
+  }
+}
+
+void main() {
+  final myClass = MyClass();
+  myClass.printMyNumber();
+}
+```
+
+## The if-null operator
+
+
